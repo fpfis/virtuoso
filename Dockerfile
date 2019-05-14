@@ -19,12 +19,14 @@ RUN ./configure --prefix=/usr/local --disable-bpel-vad --enable-conductor-vad --
 RUN make -j
 RUN make install 
 
-FROM ubuntu:latest AS final
+FROM ubuntu:latest 
 
-COPY --from=builder /usr/local/ /user/local/
+COPY --from=builder /usr/local/ /usr/local/
+
+RUN apt update && apt install -y libssl1.0.0 && rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/local/var/lib/virtuoso /var/lib/virtuoso
 
 ADD virtuoso.ini /usr/local/etc/
 
-CMD ["virtuoso-t", "+wait", "+foreground" ]
+CMD ["virtuoso-t", "+wait", "+foreground", "+configfile", "/usr/local/etc/virtuoso.ini" ]
