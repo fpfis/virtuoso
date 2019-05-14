@@ -3,7 +3,7 @@ FROM ubuntu:latest AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 ARG VOSVERSION=7.2.5.1
 WORKDIR /tmp
-ENV CFLAGS "-O2 -m64 -j"
+ENV CFLAGS "-O2 -m64"
 
 RUN apt update
 
@@ -11,14 +11,12 @@ RUN apt install -y build-essential autotools-dev autoconf automake net-tools lib
 
 RUN curl -L -o vos.tar.gz https://github.com/openlink/virtuoso-opensource/archive/v${VOSVERSION}.tar.gz
 
-RUN ls -la
-
 RUN tar xf vos.tar.gz --strip-components=1
 
 RUN ./autogen.sh
 
 RUN ./configure --prefix=/usr/local --disable-bpel-vad --enable-conductor-vad --enable-fct-vad --disable-dbpedia-vad --disable-demo-vad --disable-sparqldemo-vad --disable-tutorial-vad --with-readline --program-transform-name="s/isql/isql-v/"
-RUN make
+RUN make -j
 RUN make install 
 
 FROM ubuntu:latest AS final
