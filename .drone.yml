@@ -2,7 +2,7 @@ pipeline:
 # Build and push release
     build-and-push-branch:
         image: plugins/docker
-        repo: fpfis/varnish
+        repo: fpfis/virtuoso
         tags: latest
         secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
         when:
