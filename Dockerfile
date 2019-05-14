@@ -3,7 +3,7 @@ FROM ubuntu:latest AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 ARG VOSVERSION=7.2.5.1
 WORKDIR /tmp
-ENV CFLAGS "-O2 -m64"
+ENV CFLAGS "-O2 -m64 -j"
 
 RUN apt update
 
